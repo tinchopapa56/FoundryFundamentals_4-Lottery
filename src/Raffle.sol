@@ -19,23 +19,8 @@
 // private
 // view & pure functions
 
-/*
-
-EHHHHHHHHHHHHHHHHH
-REMIXXXXX
-    0.01, 
-    86400, 
-    "0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625",
-    "0x040c7405d5b1cfe7852b45ad79be22d3ec6002b478286eac55e39a59babc3bb7", 
-    69563845343696194848808305580506156495437382575977282805424587672873219106065,  
-    100000
-*/
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
-
-// import {VRFConsumerBaseV2Plus} from "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
-// import {VRFV2PlusClient} from "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
 
 import {VRFConsumerBaseV2Plus} from "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
 import {VRFV2PlusClient} from "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
@@ -81,7 +66,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
     */
 
     /* Events */
-    event RaffleEntered(address indexed player);
+    event RaffleEnter(address indexed player);
     event WinnerPicked(address indexed player);
 
     constructor(
@@ -113,7 +98,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
         s_players.push(payable(msg.sender));
         // 1. Makes migraition easier
         // 2. Makes front end "indexing" easier
-        emit RaffleEntered(msg.sender);
+        emit RaffleEnter(msg.sender);
     }
 
     //CEI: Checks - Effects - Interactions
@@ -164,5 +149,8 @@ contract Raffle is VRFConsumerBaseV2Plus {
     }
     function getRaffleState() external view returns (RaffleState) {
         return s_raffleState;
+    }
+    function getPlayer(uint256 indexOfPlayer) external view returns (address) {
+        return s_players[indexOfPlayer];
     }
 }
