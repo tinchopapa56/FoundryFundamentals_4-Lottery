@@ -17,13 +17,14 @@ contract RaffleTest is Test {
     uint256 interval;
     address vrfCoordinator;
     bytes32 gasLane;
-    uint32 subscriptionId;
-    uint256 callbackGasLimit;
+    uint256 subscriptionId;
+    uint32 callbackGasLimit;
 
     function setUp() public {
         DeployRaffle deployer = new DeployRaffle();
         (raffle, helperConfig) = deployer.deployContract();
-        helperConfig.networkConfig memory config = helperConfig.getConfig();
+
+        HelperConfig.NetworkConfig memory config = helperConfig.getConfig();
         entranceFee = config.entranceFee;
         interval = config.interval;
         vrfCoordinator = config.vrfCoordinator;
@@ -33,6 +34,7 @@ contract RaffleTest is Test {
     }
 
     function testRaffleInitializesInOpenState() public view {
-        assert(raffle.getRaffleState() == raffle.RaffleState.OPEN);
+        assert(raffle.getRaffleState() == Raffle.RaffleState.OPEN);
+        // assert(raffle.getRaffleState() == Raffle.RaffleState.CALCULATING);
     }
 }
