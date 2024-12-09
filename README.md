@@ -9,6 +9,11 @@ Foundry consists of:
 -   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
 -   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
 
+/*
+1) To fund scubscriptions in LINK
+forge script script/Interactions.s.sol:FundSubscription --rpc-url $SEPOLIA_RPC_URL --private-key<ENTER PRIVATE_KEY> --broadcast
+
+*/
 ## Documentation
 
 https://book.getfoundry.sh/
