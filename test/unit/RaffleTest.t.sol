@@ -31,8 +31,8 @@ contract RaffleTest is Test {
 
         HelperConfig.NetworkConfig memory config = helperConfig.getConfig();
         entranceFee = config.entranceFee;
-        interval = config.automationUpdateInterval;
-        vrfCoordinator = config.vrfCoordinator;
+        interval = config.interval;
+        vrfCoordinator = config.vrfCoordinatorV2;
         gasLane = config.gasLane;
         subscriptionId = config.subscriptionId;
         callbackGasLimit = config.callbackGasLimit;
@@ -49,7 +49,7 @@ contract RaffleTest is Test {
     //////////////////////////////////////////////////////////////*/
     function test_RaffleRevertsWhenYouDontPayEnough() public {
         vm.prank(PLAYER);
-        vm.expectRevert(Raffle.Raffle__SendMoreEthToEnterRaffle.selector);
+        vm.expectRevert(Raffle.Raffle__SendMoreToEnterRaffle.selector);
         raffle.enterRaffle();
     }
     function test_RaffleRecordsPlayerWhentheyEnter() public {
@@ -73,11 +73,21 @@ contract RaffleTest is Test {
         raffle.enterRaffle{value: entranceFee}();
         vm.warp(block.timestamp + interval + 1);
         vm.roll(block.number + 1);
-        // raffle.performUpkeep("");
-        raffle.pickWinner();
+        raffle.performUpkeep("");
+        // raffle.pickWinner();
 
-        vm.expectRevert(Raffle.Raffle__NotOpen.selector);
+        vm.expectRevert(Raffle.Raffle__RaffleNotOpen.selector);
         vm.prank(PLAYER);
         raffle.enterRaffle{value: entranceFee}();
+    }
+    /*//////////////////////////////////////////////////////////////
+                        Check Upkeep / PICK WINNER
+    //////////////////////////////////////////////////////////////*/
+    function test_checkUpkeepReturnsFalsIfItHasNoBalance() public {
+        vm.warp(block.timestamp + interval + 1);
+        vm.roll(block.number + 1);
+        (bool upkeepNeeded, ) = raffle.checkUpkeep("");
+
+        assert(!upkeepNeeded);
     }
 }

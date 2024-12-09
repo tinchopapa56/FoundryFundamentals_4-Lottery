@@ -13,7 +13,7 @@ import {Script, console} from "forge-std/Script.sol";
 contract CreateSubscription is Script {
     function createSubscriptionUsingConfig() public returns (uint256, address) {
         HelperConfig helperConfig = new HelperConfig();
-        address vrfCoord = helperConfig.getConfig().vrfCoordinator;
+        address vrfCoord = helperConfig.getConfig().vrfCoordinatorV2;
         (uint256 subId, ) = createSubscription(vrfCoord);
         return (subId, vrfCoord);
     }
@@ -42,7 +42,7 @@ contract FundSubscription is Script, CodeConstants {
 
     function fundSubscriptionUsingConfig() public {
         HelperConfig helperConfig = new HelperConfig();
-        address vrfCoord = helperConfig.getConfig().vrfCoordinator;
+        address vrfCoord = helperConfig.getConfig().vrfCoordinatorV2;
         uint256 subscriptionId = helperConfig.getConfig().subscriptionId;
         address linkTokenMOCK = helperConfig.getConfig().link; 
         fundSubscription(vrfCoord, subscriptionId, linkTokenMOCK);
@@ -77,7 +77,7 @@ contract AddConsumer is Script {
     function addConsumerUsingConfig(address mostRecentlyDeployed) public {
         HelperConfig helperConfig = new HelperConfig();
         uint256 subId = helperConfig.getConfig().subscriptionId;
-        address vrfCoord = helperConfig.getConfig().vrfCoordinator;
+        address vrfCoord = helperConfig.getConfig().vrfCoordinatorV2;
         addConsumer(mostRecentlyDeployed, vrfCoord, subId);
     }
     function addConsumer(address contractToAddToVRF, address vrfCoordinator, uint256 subId /*, address account*/) public {

@@ -30,10 +30,10 @@ contract HelperConfig is CodeConstants, Script {
     struct NetworkConfig {
         uint256 subscriptionId;
         bytes32 gasLane;
-        uint256 automationUpdateInterval;
+        uint256 interval;
         uint256 entranceFee;
         uint32 callbackGasLimit;
-        address vrfCoordinator;
+        address vrfCoordinatorV2;
         address link;
         address account;
     }
@@ -64,7 +64,7 @@ contract HelperConfig is CodeConstants, Script {
 
 
     function getConfigByChainId(uint256 chainId) public returns (NetworkConfig memory) {
-        if (networkConfigs[chainId].vrfCoordinator != address(0)) {
+        if (networkConfigs[chainId].vrfCoordinatorV2 != address(0)) {
             return networkConfigs[chainId];
         } else if (chainId == LOCAL_CHAIN_ID) {
             return getOrCreateAnvilEthConfig();
@@ -92,10 +92,10 @@ contract HelperConfig is CodeConstants, Script {
             // subscriptionId: 69563845343696194848808305580506156495437382575977282805424587672873219106065, // If left as 0, our scripts will create one!
             subscriptionId: 0, // If left as 0, our scripts will create one!
             gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
-            automationUpdateInterval: 30, // 30 seconds
+            interval: 30, // 30 seconds
             entranceFee: 0.01 ether,
             callbackGasLimit: 500000, // 500,000 gas
-            vrfCoordinator: 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B,
+            vrfCoordinatorV2: 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B,
             link: 0x779877A7B0D9E8603169DdbD7836e478b4624789,
             account: 0x643315C9Be056cDEA171F4e7b2222a4ddaB9F88D
         });
@@ -103,7 +103,7 @@ contract HelperConfig is CodeConstants, Script {
 
     function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory) {
         // Check to see if we set an active network config
-        if (localNetworkConfig.vrfCoordinator != address(0)) {
+        if (localNetworkConfig.vrfCoordinatorV2 != address(0)) {
             return localNetworkConfig;
         }
 
@@ -119,10 +119,10 @@ contract HelperConfig is CodeConstants, Script {
         localNetworkConfig = NetworkConfig({
             subscriptionId: subscriptionId,
             gasLane: 0x474e34a077df58807dbe9c96d3c009b23b3c6d0cce433e59bbf5b34f823bc56c, // doesn't really matter
-            automationUpdateInterval: 30, // 30 seconds
+            interval: 30, // 30 seconds
             entranceFee: 0.01 ether,
             callbackGasLimit: 500000, // 500,000 gas
-            vrfCoordinator: address(vrfCoordinatorV2_5Mock),
+            vrfCoordinatorV2: address(vrfCoordinatorV2_5Mock),
             link: address(link),
             account: FOUNDRY_DEFAULT_SENDER
         });
