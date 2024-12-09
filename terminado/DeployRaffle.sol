@@ -30,7 +30,7 @@
 //             config.subscriptionId,
 //             config.gasLane,
 //             config.automationUpdateInterval,
-//             config.raffleEntranceFee,
+//             config.entranceFee,
 //             config.callbackGasLimit,
 //             config.vrfCoordinatorV2_5
 //         );
