@@ -31,7 +31,7 @@ contract RaffleTest is Test {
 
         HelperConfig.NetworkConfig memory config = helperConfig.getConfig();
         entranceFee = config.entranceFee;
-        interval = config.interval;
+        interval = config.automationUpdateInterval;
         vrfCoordinator = config.vrfCoordinator;
         gasLane = config.gasLane;
         subscriptionId = config.subscriptionId;
@@ -70,7 +70,6 @@ contract RaffleTest is Test {
     function test_DontAllowPlayersToEnterWhenRaffleIsCalculating() public {
         vm.prank(PLAYER);
         
-        //run performUpkeep()
         raffle.enterRaffle{value: entranceFee}();
         vm.warp(block.timestamp + interval + 1);
         vm.roll(block.number + 1);
